@@ -1,0 +1,81 @@
+name: Sync and Clean from Upstream
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    if: github.repository == 'vain-Liang/Web-Dev-For-Beginners'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Install git-filter-repo
+        run: |
+          pip install git-filter-repo
+          
+      - name: Checkout current zh repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote and fetch
+        run: |
+          git remote add upstream https://github.com/microsoft/Web-Dev-For-Beginners.git
+          git fetch upstream
+
+      - name: Handle merge with conflict resolution
+        run: |
+          # Start merge but it might fail due to conflicts
+          git merge upstream/main --allow-unrelated-histories --no-commit || true
+          
+          # Keep our version of specific files
+          git checkout --ours .github/workflows/co-op-translator.yml
+          git add .github/workflows/co-op-translator.yml
+          
+          git checkout --ours package.json
+          git add package.json
+          
+          # Use upstream's version for all other conflicted files
+          git diff --name-only --diff-filter=U | grep -v -E '(co-op-translator\.yml|package\.json)$' | while read file; do
+            git checkout --theirs "$file"
+            git add "$file"
+          done
+          
+          # Complete the merge
+          git commit -m "Sync from upstream with automatic conflict resolution"
+
+      - name: Filter repository content
+        run: |
+          # Save the remote URL for later
+          REMOTE_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          
+          # Run git-filter-repo with improved error handling
+          git filter-repo --force --filename-callback '
+          if filename.startswith(b"translations/") and not filename.startswith(b"translations/zh/"):
+              return None
+          if filename.startswith(b"translated_images/") and not filename.endswith(b".zh.png"):
+              return None
+          return filename
+          '
+          
+          # Re-add the origin remote
+          git remote add origin "${REMOTE_URL}"
+
+      - name: Clean up history
+        run: |
+          git reflog expire --expire=now --all
+          git gc --prune=now --aggressive
+
+      - name: Push cleaned repo
+        run: |
+          git push origin main --force
