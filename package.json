@@ -4,7 +4,11 @@
 	"description": "Web Dev for Beginners - A Curriculum",
 	"main": "index.js",
 	"scripts": {
-		"convert": "node_modules/.bin/docsify-to-pdf"
+		"convert": "node_modules/.bin/docsify-to-pdf",
+		"install": "bun install docsify-cli",
+		"dev": "docsify serve .",
+		"clean": "bunx rimraf node_modules",
+    	"clean:cache": "bunx rimraf node_modules/.cache"
 	},
 	"repository": {
 		"type": "git",
