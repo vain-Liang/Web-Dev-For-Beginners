@@ -60,7 +60,7 @@ jobs:
           REMOTE_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           
           # Run git-filter-repo with improved error handling
-          git filter-repo --force --path translations/zh --path translated_images --filename-callback '
+          git filter-repo --force --filename-callback '
           if filename.startswith(b"translations/") and not filename.startswith(b"translations/zh/"):
               return None
           if filename.startswith(b"translated_images/") and not filename.endswith(b".zh.png"):
