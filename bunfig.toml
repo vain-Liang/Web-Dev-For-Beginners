@@ -1,0 +1,22 @@
+# Runtime Config
+logLevel = "debug" # "debug" | "warn" "error"
+[console]
+depth = 3 # Default 2
+
+# Package manager Config
+[install]
+# package source mirror, Default "https://registry.npmjs.org/"
+registry = "https://registry.npmmirror.com"
+# In production mode, "devDependencies" are not installed, use --production in the CLI to override this setting
+production = false
+# https://bun.com/docs/install/isolated
+linker = "hoisted"
+# Only install package versions published at least 3 days ago
+minimumReleaseAge = 259200 # seconds
+# Exclude trusted packages from the age gate
+minimumReleaseAgeExcludes = ["@types/node", "typescript"]
+
+# run command config
+[run]
+# When true, suppresses the output of the command being run by bun run or bun
+silent = false
