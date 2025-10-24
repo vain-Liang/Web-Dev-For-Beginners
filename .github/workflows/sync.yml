@@ -39,14 +39,11 @@ jobs:
           git merge upstream/main --allow-unrelated-histories --no-commit || true
           
           # Keep our version of specific files
-          git checkout --ours .github/workflows/co-op-translator.yml
-          git add .github/workflows/co-op-translator.yml
-          
           git checkout --ours package.json
           git add package.json
           
           # Use upstream's version for all other conflicted files
-          git diff --name-only --diff-filter=U | grep -v -E '(co-op-translator\.yml|package\.json)$' | while read file; do
+          git diff --name-only --diff-filter=U | grep -v -E '(package\.json)$' | while read file; do
             git checkout --theirs "$file"
             git add "$file"
           done
