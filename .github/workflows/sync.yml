@@ -50,11 +50,11 @@ jobs:
             git add .
 
             # Remove useless workflow conf
-            git rm .github/workflows/azure-static-web-apps-ashy-river-0debb7803.yml
-            git rm .github/workflows/co-op-translator.yml
-            git rm .github/workflows/links.yml
-            git rm .github/workflows/lock.yml
-            git rm .github/workflows/stale.yml
+            git rm -f .github/workflows/azure-static-web-apps-ashy-river-0debb7803.yml
+            git rm -f .github/workflows/co-op-translator.yml
+            git rm -f .github/workflows/links.yml
+            git rm -f .github/workflows/lock.yml
+            git rm -f .github/workflows/stale.yml
             find ./.github/workflows/ -name 'sync.yml' | xargs rm -f
             
             # Complete merge and commit
