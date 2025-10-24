@@ -47,7 +47,7 @@ jobs:
 
             # Accept upstream version and resolve conflicts
             git checkout --theirs .
-            git add.
+            git add .
             
             # Complete merge and commit
             git commit -m "Sync from upstream with automatic conflict resolution"
