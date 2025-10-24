@@ -48,6 +48,14 @@ jobs:
             # Accept upstream version and resolve conflicts
             git checkout --theirs .
             git add .
+
+            # Remove useless workflow conf
+            git rm .github/workflows/azure-static-web-apps-ashy-river-0debb7803.yml
+            git rm .github/workflows/co-op-translator.yml
+            git rm .github/workflows/links.yml
+            git rm .github/workflows/lock.yml
+            git rm .github/workflows/stale.yml
+            find ./.github/workflows/ -name 'sync.yml' | xargs rm -f
             
             # Complete merge and commit
             git commit -m "Sync from upstream with automatic conflict resolution"
