@@ -55,7 +55,10 @@ jobs:
             git rm -f .github/workflows/links.yml
             git rm -f .github/workflows/lock.yml
             git rm -f .github/workflows/stale.yml
-            find ./.github/workflows/ -name 'sync.yml' | xargs rm -f
+
+            # Remove github template file
+            git rm -r -f .github/ISSUE_TEMPLATE
+            git rm -f .github/pull_request_template.md
             
             # Complete merge and commit
             git commit -m "Sync from upstream with automatic conflict resolution"
