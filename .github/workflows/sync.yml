@@ -33,23 +33,33 @@ jobs:
           git remote add upstream https://github.com/microsoft/Web-Dev-For-Beginners.git
           git fetch upstream
 
-      - name: Reset to upstream and restore package.json
+      - name: Sync from upstream
         run: |
-          # Backup files to be retained
-          cp package.json /tmp/package.json.backup
+          # Attempt to merge. If conflicts arise, let it fail and stop so that manual resolution can be performed.
+          git merge upstream/main --allow-unrelated-histories --no-commit || true
           
-          # Hard-reset the local branch to align with the upstream, avoiding unnecessary conflicts
-          git reset --hard upstream/main
+          # Check for conflicts
+          if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
+            echo "Conflicts detected. Resolving..."
 
-          # Restore backup files
-          cp /tmp/package.json.backup package.json
-          
-          # Add backup files
-          git add .
-          git diff --staged --quiet
-          
-          # Complete the merge
-          git commit -m "Sync from upstream with automatic conflict resolution"
+            # Keep local file versions
+            git checkout --ours package.json
+            git add package.json
+
+            # Accept upstream version and resolve conflicts
+            git checkout --theirs .
+            git add.
+
+            # Complete merge and commit
+            git commit -m "Sync from upstream with automatic conflict resolution"
+            echo "No conflicts. Committing merge..."
+
+          # No conflicts, commit directly
+          else
+            echo "No conflicts. Committing merge..."
+            git commit -m "Sync from upstream"
+
+          fi
 
       - name: Filter repository content
         run: |
