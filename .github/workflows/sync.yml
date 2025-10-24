@@ -40,7 +40,6 @@ jobs:
           
           # Check for conflicts
           if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
-            echo "Conflicts detected. Resolving..."
 
             # Keep local file versions
             git checkout --ours package.json
@@ -49,21 +48,16 @@ jobs:
             # Accept upstream version and resolve conflicts
             git checkout --theirs .
             git add.
-
+            
             # Complete merge and commit
             git commit -m "Sync from upstream with automatic conflict resolution"
-            echo "No conflicts. Committing merge..."
-
-          # No conflicts, commit directly
+            
           else
-            echo "No conflicts. Committing merge..."
             git commit -m "Sync from upstream"
-
           fi
 
       - name: Filter repository content
         run: |
-          # Save the remote URL for later
           REMOTE_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           
           # Run git-filter-repo with improved error handling
