@@ -33,20 +33,20 @@ jobs:
           git remote add upstream https://github.com/microsoft/Web-Dev-For-Beginners.git
           git fetch upstream
 
-      - name: Handle merge with conflict resolution
+      - name: Reset to upstream and restore package.json
         run: |
-          # Start merge but it might fail due to conflicts
-          git merge upstream/main --allow-unrelated-histories --no-commit || true
+          # Backup files to be retained
+          cp package.json /tmp/package.json.backup
           
-          # Keep our version of specific files
-          git checkout --ours package.json
-          git add package.json
+          # Hard-reset the local branch to align with the upstream, avoiding unnecessary conflicts
+          git reset --hard upstream/main
+
+          # Restore backup files
+          cp /tmp/package.json.backup package.json
           
-          # Use upstream's version for all other conflicted files
-          git diff --name-only --diff-filter=U | grep -v -E '(package\.json)$' | while read file; do
-            git checkout --theirs "$file"
-            git add "$file"
-          done
+          # Add backup files and commit
+          git add .
+          git diff --staged --quiet || git commit -m "Restore local backup files"
           
           # Complete the merge
           git commit -m "Sync from upstream with automatic conflict resolution"
