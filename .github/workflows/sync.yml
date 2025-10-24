@@ -44,9 +44,9 @@ jobs:
           # Restore backup files
           cp /tmp/package.json.backup package.json
           
-          # Add backup files and commit
+          # Add backup files
           git add .
-          git diff --staged --quiet || git commit -m "Restore local backup files"
+          git diff --staged --quiet
           
           # Complete the merge
           git commit -m "Sync from upstream with automatic conflict resolution"
