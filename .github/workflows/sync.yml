@@ -33,30 +33,42 @@ jobs:
           git remote add upstream https://github.com/microsoft/Web-Dev-For-Beginners.git
           git fetch upstream
 
-      - name: Handle merge with conflict resolution
+      - name: Sync from upstream
         run: |
-          # Start merge but it might fail due to conflicts
+          # Attempt to merge. If conflicts arise, let it fail and stop so that manual resolution can be performed.
           git merge upstream/main --allow-unrelated-histories --no-commit || true
           
-          # Keep our version of specific files
-          git checkout --ours .github/workflows/co-op-translator.yml
-          git add .github/workflows/co-op-translator.yml
-          
-          git checkout --ours package.json
-          git add package.json
-          
-          # Use upstream's version for all other conflicted files
-          git diff --name-only --diff-filter=U | grep -v -E '(co-op-translator\.yml|package\.json)$' | while read file; do
-            git checkout --theirs "$file"
-            git add "$file"
-          done
-          
-          # Complete the merge
-          git commit -m "Sync from upstream with automatic conflict resolution"
+          # Check for conflicts
+          if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
+
+            # Keep local file versions
+            git checkout --ours package.json
+            git add package.json
+
+            # Accept upstream version and resolve conflicts
+            git checkout --theirs .
+            git add .
+
+            # Remove useless workflow conf
+            git rm -f .github/workflows/azure-static-web-apps-ashy-river-0debb7803.yml
+            git rm -f .github/workflows/co-op-translator.yml
+            git rm -f .github/workflows/links.yml
+            git rm -f .github/workflows/lock.yml
+            git rm -f .github/workflows/stale.yml
+
+            # Remove github template file
+            git rm -r -f .github/ISSUE_TEMPLATE
+            git rm -f .github/pull_request_template.md
+            
+            # Complete merge and commit
+            git commit -m "Sync from upstream with automatic conflict resolution"
+            
+          else
+            git commit -m "Sync from upstream"
+          fi
 
       - name: Filter repository content
         run: |
-          # Save the remote URL for later
           REMOTE_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           
           # Run git-filter-repo with improved error handling
