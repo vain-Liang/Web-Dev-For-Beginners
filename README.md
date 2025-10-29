@@ -28,7 +28,7 @@ Follow these steps to get started using these resources:
 #### Supported via GitHub Action (Automated & Always Up-to-Date)
 
 <!-- CO-OP TRANSLATOR LANGUAGES TABLE START -->
-[Chinese (Simplified)](./translations/zh/README.md)
+[Chinese (Simplified)](translations/zh/README.md)
 <!-- CO-OP TRANSLATOR LANGUAGES TABLE END -->
 
 **If you wish to have additional translations languages supported are listed [here](https://github.com/Azure/co-op-translator/blob/main/getting_started/supported-languages.md)**
