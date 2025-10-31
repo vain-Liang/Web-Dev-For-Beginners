@@ -42,8 +42,8 @@ jobs:
           if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
 
             # Keep local file versions
-            git checkout --ours package.json
-            git add package.json
+            git checkout --ours package.json README.md index.html ./docs/_navbar.md ./translations/zh/README.md ./translations/zh/docs/_sidebar.md ./translations/zh/docs/_navbar.md
+            git add package.json README.md index.html ./docs/_navbar.md ./translations/zh/README.md ./translations/zh/docs/_sidebar.md ./translations/zh/docs/_navbar.md
 
             # Accept upstream version and resolve conflicts
             git checkout --theirs .
