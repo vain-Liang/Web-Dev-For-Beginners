@@ -11,6 +11,7 @@ jobs:
       contents: write
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HUSKY: 0
 
     steps:
       - name: Install git-filter-repo
@@ -61,10 +62,14 @@ jobs:
             git rm -f .github/pull_request_template.md
             
             # Complete merge and commit
-            git commit -m "Sync from upstream with automatic conflict resolution"
+            git commit -m ":boom: refactor!: sync from upstream" \
+            -m "sync from upstream with automatic conflict resolution and rewrite the commit history" \
+            -m "BREAKING CHANGE: delete all files and commit history except for the `zh-cn` translation"
             
           else
-            git commit -m "Sync from upstream"
+            git commit -m ":boom: refactor!: Sync from upstream" \
+            -m "sync from upstream and rewrite the commit history" \
+            -m "BREAKING CHANGE: delete all files and commit history except for the `zh-cn` translation"
           fi
 
       - name: Filter repository content
