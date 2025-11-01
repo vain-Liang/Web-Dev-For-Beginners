@@ -4,13 +4,19 @@
 	"description": "Web Dev for Beginners - A Curriculum",
 	"main": "index.js",
 	"scripts": {
-	  "convert": "node_modules/.bin/docsify-to-pdf",
-	  "install": "bun install docsify-cli",
-	  "dev": "docsify serve",
-	  "clean": "bunx rimraf node_modules",
-      "clean:cache": "bunx rimraf node_modules/.cache"
+		"convert": "node_modules/.bin/docsify-to-pdf",
+		"install": "pnpm install docsify-cli",
+		"dev": "docsify serve",
+		"clean": "pnpx rimraf node_modules",
+		"clean:cache": "pnpx rimraf node_modules/.cache",
+		"prepare": "husky",
+		"commit": "commit"
 	},
 	"devDependencies": {
-		"docsify-to-pdf": "0.0.5"
+		"@commitlint/cli": "^20.1.0",
+		"@commitlint/config-conventional": "^20.0.0",
+		"@commitlint/prompt-cli": "^20.1.0",
+		"docsify-to-pdf": "0.0.5",
+		"husky": "^9.1.7"
 	}
 }
