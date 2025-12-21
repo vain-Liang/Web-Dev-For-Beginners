@@ -52,7 +52,7 @@ jobs:
 
             # Remove useless workflow conf
             git rm -f .github/workflows/azure-static-web-apps-ashy-river-0debb7803.yml
-            git rm -f .github/workflows/co-op-translator.yml
+            # git rm -f .github/workflows/co-op-translator.yml
             git rm -f .github/workflows/links.yml
             git rm -f .github/workflows/lock.yml
             git rm -f .github/workflows/stale.yml
