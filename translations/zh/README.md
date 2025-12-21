@@ -50,7 +50,7 @@ CO_OP_TRANSLATOR_METADATA:
 
 ### 📣 公告 - _使用生成式AI构建新项目_
 
-刚刚添加了新的AI助手项目，快来看看 [项目](./09-chat-project/README.md)
+刚刚添加了新的AI助手项目，快来看看 [项目](./9-chat-project/README.md)
 
 ### 📣 公告 - _新课程_ 关于JavaScript的生成式AI课程已发布
 
